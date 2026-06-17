@@ -1,0 +1,122 @@
+/* ============================================================
+   Department Head — Campus Elections Page Styles
+   Requires: shared.css (filter bar, slide animations, btn-hover)
+   ============================================================ */
+
+/* ── Election card ─────────────────────────────────────── */
+.election-card {
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #f1f5f9;
+}
+.election-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(128,0,32,0.18);
+}
+
+.election-card.election-card-dimmed::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(107, 114, 128, 0.28);
+    z-index: 4;
+    pointer-events: none;
+}
+
+.election-state-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    z-index: 7;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    min-width: 0;
+    padding: 0;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: transparent;
+    color: #ffffff;
+    -webkit-text-stroke: 2px #800020;
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.55),
+        0 6px 14px rgba(0, 0, 0, 0.45),
+        1px 1px 0 #800020,
+        -1px -1px 0 #800020,
+        1px -1px 0 #800020,
+        -1px 1px 0 #800020;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.election-state-label .state-dot {
+    display: none;
+}
+
+.election-card .overlay-trigger:disabled,
+.election-card .card-action-btn:disabled {
+    cursor: not-allowed !important;
+    opacity: 0.45 !important;
+    filter: grayscale(0.35);
+    transform: none !important;
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .election-state-label {
+        font-size: 1.2rem;
+    }
+}
+
+/* ── Description overlay (slide-in from right) ──────────── */
+.election-card .desc-overlay {
+    position: absolute;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(160deg, #800020 0%, #A0153E 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+    transition: right 0.4s cubic-bezier(0.4,0,0.2,1);
+    z-index: 10;
+}
+.election-card.overlay-open .desc-overlay {
+    right: 0;
+}
+.election-card .overlay-trigger {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 6;
+    background: #800020;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 10px rgba(128,0,32,0.4);
+    transition: background 0.2s, transform 0.2s;
+}
+.election-card .overlay-trigger:hover {
+    background: #A0153E;
+    transform: translateY(-50%) scale(1.1);
+}

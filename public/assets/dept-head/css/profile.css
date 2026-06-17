@@ -1,0 +1,258 @@
+/* ============================================================
+   Department Head — Edit Profile Page Styles
+   ============================================================ */
+
+.profile-page {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+/* ── Profile card (banner + avatar header) ─────────────── */
+.profile-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.profile-banner {
+    height: 120px;
+    background: linear-gradient(135deg, #800020 0%, #A0153E 60%, #c0392b 100%);
+    position: relative;
+}
+
+.profile-avatar-wrap {
+    position: absolute;
+    bottom: -48px;
+    left: 2rem;
+}
+
+.profile-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: 4px solid white;
+    background: linear-gradient(135deg, #800020, #A0153E);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    transition: opacity 0.2s;
+}
+.profile-avatar:hover {
+    opacity: 0.85;
+}
+.profile-avatar .avatar-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    color: white;
+}
+.profile-avatar:hover .avatar-overlay {
+    opacity: 1;
+}
+
+.profile-header-info {
+    padding: 3.5rem 2rem 1.5rem;
+}
+.profile-header-info h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #1f2937;
+    margin: 0 0 0.2rem;
+}
+.profile-header-info p {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+.profile-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #fff0f3;
+    color: #800020;
+    border: 1px solid #fecdd3;
+    border-radius: 20px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+}
+
+/* ── Form cards ────────────────────────────────────────── */
+.form-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-card-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #1f2937;
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+.form-card-title .title-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, #800020, #A0153E);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* ── Profile grid ──────────────────────────────────────── */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+@media (max-width: 600px) {
+    .profile-grid { grid-template-columns: 1fr; }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #374151;
+}
+.form-group label span.required {
+    color: #800020;
+    margin-left: 2px;
+}
+
+/* ── Form controls ─────────────────────────────────────── */
+.form-control {
+    padding: 0.6rem 0.9rem;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #1f2937;
+    background: white;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+.form-control:focus {
+    outline: none;
+    border-color: #800020;
+    box-shadow: 0 0 0 3px rgba(128,0,32,0.08);
+}
+.form-control[readonly] {
+    background: #f9fafb;
+    color: #6b7280;
+    cursor: not-allowed;
+}
+
+/* ── Password field ────────────────────────────────────── */
+.pw-wrapper {
+    position: relative;
+}
+.pw-toggle {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #9ca3af;
+    font-size: 0.95rem;
+    padding: 0;
+}
+.pw-toggle:hover {
+    color: #800020;
+}
+
+.hint {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    margin-top: 0.25rem;
+}
+
+.pw-match {
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+.pw-match.ok   { color: #16a34a; }
+.pw-match.fail { color: #dc2626; }
+
+/* ── Save button ───────────────────────────────────────── */
+.btn-save {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #800020, #A0153E);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    padding: 0.7rem 1.75rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+    margin-top: 0.5rem;
+}
+.btn-save:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* ── Alert bars ────────────────────────────────────────── */
+.alert-success-bar {
+    background: #f0fdf4;
+    border: 1.5px solid #bbf7d0;
+    border-radius: 10px;
+    padding: 0.85rem 1.25rem;
+    color: #166534;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+}
+.alert-error-bar {
+    background: #fff1f2;
+    border: 1.5px solid #fecdd3;
+    border-radius: 10px;
+    padding: 0.85rem 1.25rem;
+    color: #9f1239;
+    font-size: 0.88rem;
+    margin-bottom: 1.25rem;
+}

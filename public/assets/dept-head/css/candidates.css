@@ -1,0 +1,101 @@
+/* ============================================================
+   Department Head — Candidates Page Styles
+   Requires: shared.css (filter bar, slide animations, btn-hover, election-grid)
+   ============================================================ */
+
+/* ── Election folder / nav card ────────────────────────── */
+.nav-card {
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #f1f5f9;
+    cursor: pointer;
+}
+.nav-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+}
+
+.nav-card.nav-card-dimmed::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(107, 114, 128, 0.28);
+    z-index: 4;
+    pointer-events: none;
+}
+
+.election-state-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    z-index: 7;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    padding: 0;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: transparent;
+    color: #ffffff;
+    -webkit-text-stroke: 2px #800020;
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.55),
+        0 6px 14px rgba(0, 0, 0, 0.45),
+        1px 1px 0 #800020,
+        -1px -1px 0 #800020,
+        1px -1px 0 #800020,
+        -1px 1px 0 #800020;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.election-state-label-disabled {
+    width: 82%;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 0.06em;
+    font-size: 1.25rem;
+    transform: translate(-50%, -50%) rotate(-38deg);
+}
+
+.election-view-btn {
+    position: relative;
+    z-index: 8;
+}
+
+@media (max-width: 768px) {
+    .election-state-label {
+        font-size: 1.2rem;
+    }
+
+    .election-state-label-disabled {
+        width: 86%;
+        font-size: 0.95rem;
+        transform: translate(-50%, -50%) rotate(-35deg);
+    }
+}
+
+/* ── Student search dropdown scrollbar ─────────────────── */
+#studentDropdown::-webkit-scrollbar {
+    width: 8px;
+}
+#studentDropdown::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+#studentDropdown::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+#studentDropdown::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

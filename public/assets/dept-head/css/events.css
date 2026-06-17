@@ -1,0 +1,288 @@
+/* ============================================================
+   Department Head — Events Page Styles
+   Requires: shared.css (btn-hover, filter-card base)
+   ============================================================ */
+
+/* ── Facebook-style modal ──────────────────────────────── */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(244,244,244,0.8);
+    overflow-y: auto;
+    padding: 2rem 0;
+}
+.modal-content {
+    background-color: white;
+    margin: auto;
+    padding: 0;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1);
+}
+.modal-header {
+    padding: 1rem;
+    border-bottom: 1px solid #e4e6eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #050505;
+    width: 100%;
+    text-align: center;
+}
+.close {
+    position: absolute;
+    right: 1rem;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background-color: #e4e6eb;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #65676b;
+    cursor: pointer;
+    border: none;
+    line-height: 1;
+    transition: background-color 0.2s;
+}
+.close:hover { background-color: #d8dadf; }
+
+/* ── User info row above post form ─────────────────────── */
+.user-info {
+    padding: 1rem 1rem 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.user-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #800020, #FDB927);
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+.user-details h4 {
+    margin: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #050505;
+}
+.user-details .visibility {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8125rem;
+    color: #65676b;
+    background-color: #e4e6eb;
+    padding: 0.125rem 0.5rem;
+    border-radius: 4px;
+    margin-top: 0.25rem;
+}
+
+/* ── Post input area ───────────────────────────────────── */
+.post-input-area { padding: 0 1rem; }
+.post-input-area textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    resize: none;
+    font-size: 1.5rem;
+    color: #050505;
+    min-height: 120px;
+    padding: 0.5rem 0;
+    font-family: inherit;
+}
+.post-input-area textarea::placeholder { color: #b0b3b8; }
+
+/* ── Image preview ─────────────────────────────────────── */
+.image-preview-container {
+    margin: 0 1rem;
+    border: 1px solid #e4e6eb;
+    border-radius: 8px;
+    padding: 0.5rem;
+    position: relative;
+    display: none;
+}
+.image-preview-container.active { display: block; }
+.image-preview {
+    width: 100%;
+    border-radius: 8px;
+    max-height: 300px;
+    object-fit: cover;
+}
+.remove-image {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* ── Add-to-post toolbar ───────────────────────────────── */
+.add-to-post {
+    margin: 1rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #e4e6eb;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.add-to-post span {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #050505;
+}
+.add-options { display: flex; gap: 0.25rem; }
+.add-option {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background-color 0.2s;
+}
+.add-option:hover { background-color: #f2f3f5; }
+.add-option i { font-size: 1.5rem; }
+.hidden-inputs { display: none; }
+
+/* ── Post / update button ──────────────────────────────── */
+.post-button {
+    margin: 0.5rem 1rem 1rem 1rem;
+    width: calc(100% - 2rem);
+    padding: 0.5rem;
+    background-color: #800020;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.post-button:hover { background-color: #5c0015; }
+.post-button:disabled {
+    background-color: #e4e6eb;
+    color: #bcc0c4;
+    cursor: not-allowed;
+}
+
+/* ── Events data table ─────────────────────────────────── */
+.events-table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+.events-table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.events-table-container table thead tr { background: #800020; }
+.events-table-container table thead th {
+    padding: 1rem 1.2rem;
+    color: white;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    text-align: left;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    border: none;
+}
+.events-table-container table thead th.no-sort { cursor: default; }
+.events-table-container table thead th:hover { background: #6d0018; }
+.events-table-container table thead th.no-sort:hover { background: #800020; }
+.events-table-container table thead th .sort-icon { margin-left: 6px; opacity: 0.75; }
+.events-table-container table tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.15s;
+}
+.events-table-container table tbody tr:nth-child(even) { background: #f9fafb; }
+.events-table-container table tbody tr:hover { background: #f1f5f9 !important; }
+.events-table-container table tbody td {
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+    color: #374151;
+    vertical-align: middle;
+    border: none;
+}
+
+/* ── Action buttons inside table ───────────────────────── */
+.btn-tbl-update {
+    padding: 0.3rem 1rem;
+    background: white;
+    color: #800020;
+    border: 2px solid #800020;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+    margin-right: 4px;
+}
+.btn-tbl-update:hover { background: #800020; color: white; transform: translateY(-1px); }
+.btn-tbl-delete {
+    padding: 0.3rem 1rem;
+    background: #800020;
+    color: white;
+    border: 2px solid #800020;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+.btn-tbl-delete:hover { background: #5c0015; border-color: #5c0015; transform: translateY(-1px); }
+
+/* ── Event-specific filter overrides ───────────────────── */
+.evt-search-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    flex-shrink: 0;
+}
+.evt-search-input {
+    padding: 0.55rem 1rem;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #1f2937;
+    background: white;
+    min-width: 220px;
+    transition: border-color 0.2s;
+}
+.evt-search-input:focus {
+    outline: none;
+    border-color: #800020;
+    box-shadow: 0 0 0 3px rgba(128,0,32,0.08);
+}
+.evt-search-input::placeholder { color: #9ca3af; }
+.sort-icon { font-style: normal; opacity: 0.6; margin-left: 3px; font-size: 0.8rem; }
+
+/* modal-footer used in FB-style modals */
+.modal-footer {
+    padding: 1.5rem;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}

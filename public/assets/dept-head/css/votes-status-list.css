@@ -1,0 +1,303 @@
+/* ============================================================
+   Department Head — Vote Status List Page Styles
+   (card grid of all elections)
+   ============================================================ */
+
+/* ── Election card ─────────────────────────────────────── */
+.vs-card {
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid #f1f5f9;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.vs-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(128,0,32,0.18);
+}
+
+.vs-card.vs-card-finished::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(107, 114, 128, 0.28);
+    z-index: 4;
+    pointer-events: none;
+}
+
+.vs-finished-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    z-index: 7;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #ffffff;
+    -webkit-text-stroke: 2px #800020;
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.55),
+        0 6px 14px rgba(0, 0, 0, 0.45),
+        1px 1px 0 #800020,
+        -1px -1px 0 #800020,
+        1px -1px 0 #800020,
+        -1px 1px 0 #800020;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* ── Card banner image area ────────────────────────────── */
+.vs-banner {
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(135deg, #800020 0%, #A0153E 100%);
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+}
+.vs-banner img { width: 100%; height: 100%; object-fit: cover; }
+.vs-banner-placeholder { font-size: 4.5rem; color: rgba(255,255,255,0.15); }
+
+/* ── Status badge (overlaid on banner) ─────────────────── */
+.vs-status-badge {
+    position: absolute;
+    top: 12px; right: 12px;
+    z-index: 8;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    background: white;
+    color: #1e293b;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* ── Card body ─────────────────────────────────────────── */
+.vs-body {
+    padding: 1.25rem 1.4rem 1.4rem;
+    text-align: center;
+}
+.vs-dept {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: #1e293b;
+    margin: 0 0 0.3rem;
+}
+.vs-name {
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: #1e293b;
+    margin: 0 0 0.55rem;
+    line-height: 1.3;
+}
+.vs-dates {
+    font-size: 0.82rem;
+    color: #64748b;
+    margin: 0 0 0.6rem;
+}
+.vs-meta {
+    font-size: 0.88rem;
+    color: #64748b;
+    margin: 0 0 0.3rem;
+    line-height: 1.5;
+}
+.vs-meta strong { color: #800020; font-weight: 800; }
+
+/* ── Stat boxes inside card ────────────────────────────── */
+.vs-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin: 1rem 0;
+}
+.vs-stat-box {
+    border-radius: 14px;
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+}
+.vs-stat-num {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #1e293b;
+    line-height: 1;
+    margin-bottom: 0.35rem;
+}
+.vs-stat-lbl {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* ── CTA button inside card ────────────────────────────── */
+.vs-btn {
+    display: block;
+    position: relative;
+    z-index: 8;
+    width: 100%;
+    padding: 0.75rem;
+    background: #800020;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    text-align: center;
+}
+.vs-btn:hover {
+    background: #5c0015;
+    box-shadow: 0 4px 14px rgba(128,0,32,0.35);
+}
+
+/* ── Empty state ───────────────────────────────────────── */
+.no-elections {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 12px;
+    margin-top: 2rem;
+}
+.no-elections i {
+    font-size: 4rem;
+    color: #d1d5db;
+    margin-bottom: 1rem;
+    display: block;
+}
+.no-elections h3 { color: #6B7280; margin-bottom: 0.5rem; }
+.no-elections p  { color: #9ca3af; }
+
+/* ── Vote-status filter bar (vs- prefixed) ─────────────── */
+.vs-filter-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.vs-filter-left {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+    flex: 1;
+}
+.vs-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+.vs-filter-group label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+.vs-filter-input {
+    padding: 0.55rem 0.9rem;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #1f2937;
+    background: white;
+    transition: border-color 0.2s;
+    min-width: 150px;
+}
+.vs-filter-input:focus {
+    outline: none;
+    border-color: #800020;
+    box-shadow: 0 0 0 3px rgba(128,0,32,0.08);
+}
+.vs-filter-select {
+    padding: 0.55rem 0.9rem;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #1f2937;
+    background: white;
+    transition: border-color 0.2s;
+    min-width: 160px;
+    cursor: pointer;
+}
+.vs-filter-select:focus { outline: none; border-color: #800020; }
+.vs-filter-actions { display: flex; align-items: flex-end; gap: 0.5rem; }
+.vs-btn-apply {
+    padding: 0.55rem 1.4rem;
+    background: #800020;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+.vs-btn-apply:hover { background: #5c0015; transform: translateY(-1px); }
+.vs-btn-reset {
+    padding: 0.55rem 1.4rem;
+    background: #1f2937;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+.vs-btn-reset:hover { background: #111827; transform: translateY(-1px); }
+.vs-search-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    flex-shrink: 0;
+}
+.vs-search-input {
+    padding: 0.55rem 1rem;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #1f2937;
+    background: white;
+    min-width: 220px;
+    transition: border-color 0.2s;
+}
+.vs-search-input:focus {
+    outline: none;
+    border-color: #800020;
+    box-shadow: 0 0 0 3px rgba(128,0,32,0.08);
+}
+.vs-search-input::placeholder { color: #9ca3af; }
+
+/* ── No-results placeholder in grid ───────────────────── */
+.vs-no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 12px;
+}
+.vs-no-results i { font-size: 3rem; color: #d1d5db; display: block; margin-bottom: 1rem; }
+.vs-no-results h3 { color: #6B7280; margin-bottom: 0.5rem; }
+.vs-no-results p  { color: #9ca3af; }
+
+@media (max-width: 768px) {
+    .vs-finished-label {
+        font-size: 1.2rem;
+    }
+}
