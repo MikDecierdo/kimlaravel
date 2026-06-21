@@ -14,23 +14,18 @@ return new class extends Migration
             $table->string('position')->nullable()->after('campus_election_id');
         });
 
-        DB::table('votes')
-            ->join('candidates', 'votes.candidate_id', '=', 'candidates.id')
-            ->update([
-                'votes.campus_election_id' => DB::raw('candidates.campus_election_id'),
-                'votes.position' => DB::raw('candidates.position'),
-            ]);
+        DB::statement("UPDATE votes SET campus_election_id = candidates.campus_election_id, position = candidates.position FROM candidates WHERE votes.candidate_id = candidates.id");
 
-        DB::statement('DELETE v1 FROM votes v1 INNER JOIN votes v2 ON v1.user_id = v2.user_id AND v1.campus_election_id = v2.campus_election_id AND v1.position = v2.position AND v1.id > v2.id');
+        DB::statement('DELETE FROM votes v1 USING votes v2 WHERE v1.user_id = v2.user_id AND v1.campus_election_id = v2.campus_election_id AND v1.position = v2.position AND v1.id > v2.id');
 
-        DB::statement('ALTER TABLE votes MODIFY campus_election_id BIGINT UNSIGNED NOT NULL');
-        DB::statement('ALTER TABLE votes MODIFY position VARCHAR(255) NOT NULL');
-        DB::statement('ALTER TABLE votes ADD UNIQUE KEY votes_user_election_position_unique (user_id, campus_election_id, position)');
+        DB::statement('ALTER TABLE votes ALTER COLUMN campus_election_id SET NOT NULL');
+        DB::statement('ALTER TABLE votes ALTER COLUMN position SET NOT NULL');
+        DB::statement('ALTER TABLE votes ADD CONSTRAINT votes_user_election_position_unique UNIQUE (user_id, campus_election_id, position)');
     }
 
     public function down(): void
     {
-        DB::statement('ALTER TABLE votes DROP INDEX votes_user_election_position_unique');
+        DB::statement('ALTER TABLE votes DROP CONSTRAINT votes_user_election_position_unique');
         Schema::table('votes', function (Blueprint $table) {
             $table->dropForeign(['campus_election_id']);
         });

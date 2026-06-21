@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -27,7 +28,7 @@ class RegisterController extends Controller
             'password'    => 'required|string|min:8|confirmed',
         ]);
 
-        User::create([
+        $user = User::create([
             'name'            => $validated['first_name'],
             'middle_name'     => $validated['middle_name'] ?? null,
             'last_name'       => $validated['last_name'],
@@ -39,6 +40,8 @@ class RegisterController extends Controller
             'role'            => 'student',
             'approval_status' => 'pending',
         ]);
+
+        event(new Registered($user));
 
         return redirect()->route('login.student')
             ->with('registration_pending', 'Your account request has been submitted! Please wait for your Department Head to approve your account.');

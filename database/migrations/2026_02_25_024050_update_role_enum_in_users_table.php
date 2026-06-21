@@ -14,8 +14,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // MySQL requires raw SQL to modify ENUM values
-        DB::statement("ALTER TABLE users MODIFY COLUMN role ENUM('student') NOT NULL DEFAULT 'student'");
+        DB::statement("ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check");
+        DB::statement("ALTER TABLE users ALTER COLUMN role TYPE VARCHAR(50) USING role::VARCHAR(50)");
+        DB::statement("ALTER TABLE users ALTER COLUMN role SET DEFAULT 'student'");
+        DB::statement("ALTER TABLE users ALTER COLUMN role SET NOT NULL");
+        DB::statement("ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('student'))");
     }
 
     /**
@@ -23,6 +26,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement("ALTER TABLE users MODIFY COLUMN role ENUM('admin','staff','student','department_head') NOT NULL DEFAULT 'student'");
+        DB::statement("ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check");
+        DB::statement("ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('admin','staff','student','department_head'))");
     }
 };

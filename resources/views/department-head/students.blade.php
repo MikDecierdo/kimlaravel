@@ -361,25 +361,33 @@
 <script>
 const isCsgHead = @json($isCsgHead);
 // --- Import Modal ---
-if (!isCsgHead) {
-function openImportModal() {
+var openImportModal = function () {
+    if (isCsgHead) return;
     const m = document.getElementById('importModal');
+    if (!m) return;
     m.style.display = 'flex';
     document.getElementById('importResults').style.display = 'none';
     document.getElementById('excelFile').value = '';
     document.getElementById('importSummary').textContent = '';
     document.getElementById('importSkippedList').innerHTML = '';
     document.getElementById('importErrorList').innerHTML = '';
-}
-function closeImportModal() {
-    document.getElementById('importModal').style.display = 'none';
-}
-document.getElementById('importModal').addEventListener('click', function(e) {
-    if (e.target === this) closeImportModal();
-});
-async function submitImport() {
+};
+var closeImportModal = function () {
+    const m = document.getElementById('importModal');
+    if (m) m.style.display = 'none';
+};
+(function () {
+    var m = document.getElementById('importModal');
+    if (m) {
+        m.addEventListener('click', function (e) {
+            if (e.target === this) closeImportModal();
+        });
+    }
+})();
+var submitImport = async function () {
+    if (isCsgHead) return;
     const fileInput = document.getElementById('excelFile');
-    if (!fileInput.files.length) {
+    if (!fileInput || !fileInput.files.length) {
         alert('Please select a file first.');
         return;
     }
@@ -389,11 +397,19 @@ async function submitImport() {
 
     const formData = new FormData();
     formData.append('excel_file', fileInput.files[0]);
-    formData.append('_token', document.querySelector('input[name="_token"]').value);
 
     try {
+        var tokenInput = document.querySelector('input[name="_token"]');
+        if (!tokenInput) {
+            throw new Error('CSRF token not found. Please refresh the page.');
+        }
+        formData.append('_token', tokenInput.value);
+
         const res = await fetch('{{ route("department-head.students.import") }}', {
             method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+            },
             body: formData,
         });
         const data = await res.json();
@@ -410,20 +426,19 @@ async function submitImport() {
             skipped.innerHTML = data.skipped.map(s => `⚠ ${s}`).join('<br>');
             errors.innerHTML  = data.errors.map(e => `✖ ${e}`).join('<br>');
             if (data.imported > 0) {
-                setTimeout(() => location.reload(), 2500);
+                setTimeout(function () { location.reload(); }, 2500);
             }
         } else {
             summary.style.color = '#c0392b';
             summary.textContent = '✖ ' + data.message;
         }
     } catch (err) {
-        alert('Network error: ' + err);
+        alert('Import failed: ' + err.message);
     } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-upload"></i> Import Now';
     }
-}
-}
+};
 // --- End Import ---
 
 const students = @json($students);

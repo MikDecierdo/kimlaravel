@@ -329,6 +329,13 @@ class AdminController extends Controller
 
         Staff::create($payload);
 
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Faculty added successfully.',
+            ]);
+        }
+
         return redirect()->route('admin.faculties')
             ->with('success', 'Faculty added successfully.');
     }
@@ -724,7 +731,7 @@ class AdminController extends Controller
 
         return Staff::query()
             ->whereRaw('LOWER(TRIM(name)) = ?', [$normalizedFirstName])
-            ->whereRaw('LOWER(TRIM(COALESCE(middle_name, ""))) = ?', [$normalizedMiddleName])
+            ->whereRaw('LOWER(TRIM(COALESCE(middle_name, \'\'))) = ?', [$normalizedMiddleName])
             ->whereRaw('LOWER(TRIM(last_name)) = ?', [$normalizedLastName])
             ->where('position', 'Faculty')
             ->first();
