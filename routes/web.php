@@ -104,6 +104,8 @@ Route::middleware(['auth:student', 'validate.session:student'])->group(function 
         Route::get('/events/{event}/comments', [EventController::class, 'getComments'])->name('events.comments');
         Route::get('/profile', [\App\Http\Controllers\StudentProfileController::class, 'edit'])->name('student.profile');
         Route::post('/profile', [\App\Http\Controllers\StudentProfileController::class, 'update'])->name('student.profile.update');
+        Route::post('/profile/verify-password', [\App\Http\Controllers\StudentProfileController::class, 'verifyPasswordChange'])->name('student.profile.verify-password');
+        Route::post('/profile/resend-code', [\App\Http\Controllers\StudentProfileController::class, 'resendVerificationCode'])->name('student.profile.resend-code');
         Route::get('/candidate-applications', [StudentCandidateApplicationController::class, 'index'])->name('student.candidate-applications');
         Route::post('/candidate-applications', [StudentCandidateApplicationController::class, 'store'])->name('student.candidate-applications.store');
         Route::get('/candidate-applications/statuses', [StudentCandidateApplicationController::class, 'statuses'])->name('student.candidate-applications.statuses');
@@ -196,5 +198,7 @@ Route::middleware(['auth:department_head', 'validate.session:department_head'])-
 
         Route::get('/profile', [DepartmentHeadController::class, 'editProfile'])->name('profile');
         Route::post('/profile', [DepartmentHeadController::class, 'updateProfile'])->name('profile.update');
+        Route::post('/profile/verify-password', [DepartmentHeadController::class, 'verifyPasswordChange'])->name('profile.verify-password');
+        Route::post('/profile/resend-code', [DepartmentHeadController::class, 'resendVerificationCode'])->name('profile.resend-code');
     });
 });

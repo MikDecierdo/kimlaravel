@@ -34,6 +34,33 @@
         </div>
     @endif
 
+    @if($pending ?? false)
+        {{-- Verification Code Form --}}
+        <div class="form-card" style="border: 2px solid #2b6cb0;">
+            <div class="form-card-title">
+                <div class="title-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                Verify Password Change
+            </div>
+            <p style="margin: 0 0 1rem 0; color: #4a5568;">A 6-digit verification code was sent to your email. Please enter it below.</p>
+            <form action="{{ route('student.profile.verify-password') }}" method="POST" style="display:flex; gap:0.75rem; align-items:flex-end; flex-wrap:wrap;">
+                @csrf
+                <div class="form-group" style="flex:1; min-width:200px;">
+                    <label>Verification Code</label>
+                    <input type="text" name="verification_code" class="form-control" placeholder="000000" maxlength="6" required pattern="[0-9]{6}" inputmode="numeric" autocomplete="off">
+                </div>
+                <button type="submit" class="btn-save" style="margin-bottom:2px;">
+                    <i class="fa-solid fa-check"></i> Verify Code
+                </button>
+            </form>
+            <form action="{{ route('student.profile.resend-code') }}" method="POST" style="margin-top:0.75rem;">
+                @csrf
+                <button type="submit" style="background:none; border:none; color:#2b6cb0; cursor:pointer; font-size:0.875rem; padding:0; text-decoration:underline;">
+                    Resend verification code
+                </button>
+            </form>
+        </div>
+    @endif
+
     <form action="{{ route('student.profile.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
 

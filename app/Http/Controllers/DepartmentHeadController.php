@@ -10,10 +10,12 @@ use App\Models\Student;
 use App\Models\Staff;
 use App\Models\Event;
 use App\Models\CandidateRegistration;
+use App\Mail\PasswordChangeCode;
 use App\Traits\DeptVariantHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use App\Notifications\CandidateAddedNotification;
 use App\Notifications\CandidateRegistrationApprovedNotification;
 use App\Notifications\CandidateRegistrationDeclinedNotification;
@@ -1640,7 +1642,8 @@ class DepartmentHeadController extends Controller
     public function editProfile()
     {
         $staff = $this->currentDepartmentHeadStaff();
-        return view('department-head.profile', compact('staff'));
+        $pending = session('password_change_pending');
+        return view('department-head.profile', compact('staff', 'pending'));
     }
 
     // ── Student Registration Requests ──────────────────────────
@@ -1957,16 +1960,30 @@ class DepartmentHeadController extends Controller
 
         $validated = $request->validate($rules);
 
-        // Password change — verify current password first
+        $passwordChanged = false;
+
+        // Password change — verify current password first, then send verification code
         if (!empty($validated['password'])) {
             if (empty($request->current_password) || !\Illuminate\Support\Facades\Hash::check($request->current_password, $staff->password)) {
                 return back()->withErrors(['current_password' => 'Current password is incorrect.'])->withInput();
             }
-            $validated['password'] = bcrypt($validated['password']);
-        } else {
-            unset($validated['password']);
+
+            $code = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+
+            session([
+                'password_change_pending' => [
+                    'code'       => $code,
+                    'expires_at' => now()->addMinutes(10)->timestamp,
+                    'password'   => bcrypt($validated['password']),
+                ],
+            ]);
+
+            Mail::to($staff->email)->send(new PasswordChangeCode($code, $staff->name));
+
+            $passwordChanged = true;
         }
-        unset($validated['current_password']);
+
+        unset($validated['password'], $validated['current_password'], $validated['password_confirmation']);
 
         // Profile picture upload
         if ($request->hasFile('profile_picture')) {
@@ -1989,7 +2006,6 @@ class DepartmentHeadController extends Controller
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
             'profile_picture' => $validated['profile_picture'] ?? $user->profile_picture,
-            ...(isset($validated['password']) ? ['password' => $validated['password']] : []),
         ]);
 
         $staff->update([
@@ -2000,10 +2016,69 @@ class DepartmentHeadController extends Controller
             'phone_number' => $validated['phone_number'] ?? $staff->phone_number,
             'office_location' => $validated['office_location'] ?? $staff->office_location,
             'profile_picture' => $validated['profile_picture'] ?? $staff->profile_picture,
-            ...(isset($validated['password']) ? ['password' => $validated['password']] : []),
         ]);
 
+        if ($passwordChanged) {
+            return back()->with('success', 'A verification code has been sent to your email. Please enter it below to complete the password change.');
+        }
+
         return back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function verifyPasswordChange(Request $request)
+    {
+        $request->validate([
+            'verification_code' => 'required|string|size:6',
+        ]);
+
+        $pending = session('password_change_pending');
+
+        if (!$pending || !isset($pending['code'], $pending['expires_at'], $pending['password'])) {
+            return back()->withErrors(['verification_code' => 'No pending password change request. Please try again.']);
+        }
+
+        if (now()->timestamp > $pending['expires_at']) {
+            session()->forget('password_change_pending');
+            return back()->withErrors(['verification_code' => 'Verification code has expired. Please request a new password change.']);
+        }
+
+        if ($request->verification_code !== $pending['code']) {
+            return back()->withErrors(['verification_code' => 'Invalid verification code.']);
+        }
+
+        $staff = $this->currentDepartmentHeadStaff();
+        $staff->update(['password' => $pending['password']]);
+
+        $user = Auth::guard('department_head')->user();
+        if ($user) {
+            $userRecord = \App\Models\User::where('email', $staff->email)->first();
+            if ($userRecord) {
+                $userRecord->update(['password' => $pending['password']]);
+            }
+        }
+
+        session()->forget('password_change_pending');
+
+        return back()->with('success', 'Password changed successfully!');
+    }
+
+    public function resendVerificationCode()
+    {
+        $pending = session('password_change_pending');
+
+        if (!$pending || !isset($pending['code'])) {
+            return back()->withErrors(['verification_code' => 'No pending password change request.']);
+        }
+
+        if (now()->timestamp > $pending['expires_at']) {
+            session()->forget('password_change_pending');
+            return back()->withErrors(['verification_code' => 'Verification code has expired. Please request a new password change.']);
+        }
+
+        $staff = $this->currentDepartmentHeadStaff();
+        Mail::to($staff->email)->send(new PasswordChangeCode($pending['code'], $staff->name));
+
+        return back()->with('success', 'A new verification code has been sent to your email.');
     }
 
     // ── Bulk Import Students from Excel ────────────────────────────────
