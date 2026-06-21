@@ -4,7 +4,7 @@ A comprehensive Laravel-based voting system designed for **San Pedro College (SP
 
 ![Laravel](https://img.shields.io/badge/Laravel-10.x-red)
 ![PHP](https://img.shields.io/badge/PHP-8.1+-blue)
-![MySQL](https://img.shields.io/badge/MySQL-8.0+-orange)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16+-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ## ✨ Features
@@ -34,26 +34,34 @@ A comprehensive Laravel-based voting system designed for **San Pedro College (SP
 ## 🚀 Quick Start
 
 ### Prerequisites
-- XAMPP (with PHP 8.1+ and MySQL)
+- XAMPP (with PHP 8.1+)
+- PostgreSQL 16+
 - Composer
 - Git (optional)
 
 ### Installation Steps
 
-1. **Start XAMPP**
-   - Start Apache and MySQL services
+1. **Start Services**
+   - Start Apache in XAMPP
+   - Start PostgreSQL (e.g., via pgAdmin or `pg_ctl`)
 
 2. **Create Database**
-   - Open phpMyAdmin: `http://localhost/phpmyadmin`
-   - Create new database: `spc_voting`
+   - Using psql:
+     ```bash
+     psql -U postgres -c "CREATE DATABASE spc_voting;"
+     ```
+   - Or via pgAdmin: create a new database named `spc_voting`
 
 3. **Configure Environment**
    - Copy `.env.example` to `.env`
    - Update database settings:
      ```env
+     DB_CONNECTION=pgsql
+     DB_HOST=127.0.0.1
+     DB_PORT=5432
      DB_DATABASE=spc_voting
-     DB_USERNAME=root
-     DB_PASSWORD=
+     DB_USERNAME=postgres
+     DB_PASSWORD=password
      ```
 
 4. **Install & Setup**
@@ -123,7 +131,7 @@ votes
 
 ### Technology Stack
 - **Backend:** Laravel 10.x
-- **Database:** MySQL 8.0+
+- **Database:** PostgreSQL 16+
 - **Frontend:** Blade Templates, Vanilla JavaScript
 - **Styling:** Custom CSS3 with CSS Variables
 - **Icons:** Font Awesome 6.4
@@ -245,9 +253,9 @@ This project is open-sourced software licensed under the [MIT license](https://o
 ### Common Issues
 
 **Database Connection Failed?**
-- Check XAMPP MySQL is running
-- Verify database name in `.env`
-- Run `check-db.bat` to test connection
+- Check PostgreSQL is running (services.msc or pgAdmin)
+- Verify database credentials in `.env`
+- Test connection: `psql -U postgres -d spc_voting`
 
 **Login Not Working?**
 - Clear cache: `php artisan cache:clear`
