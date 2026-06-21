@@ -25,11 +25,13 @@ A comprehensive Laravel-based voting system designed for **San Pedro College (SP
 - ✅ **Full Control** - Manage all system components
 
 ### 🏛️ Departments Supported
-- **IT** - Information Technology
-- **BSBA** - Business Administration
+- **BSIT** - Information Technology
+- **CBAE** - Business Administration and Entrepreneurship
 - **CRIM** - Criminology
-- **EDUC** - Education
-- **ENGINEERING** - Engineering
+- **CHTM** - Tourism
+- **CTE** - Education
+- **SHS** - Senior High School
+- **CSG** - Supreme Council of Government
 
 ## 🚀 Quick Start
 
